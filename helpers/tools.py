@@ -89,7 +89,11 @@ def generate_params_file(file_path: str) -> None:
 
     with open(file_path, 'w') as file:
         # radomly generate the prime numbers
-        q_dh, a_dh, q_gamal, a_gamal = generate_prime(100, 1000, 4)
+        q_dh = generate_prime(100, 1000)
+        a_dh = np.random.randint(2, q_dh)
+        q_gamal = generate_prime(100, 1000)
+        a_gamal = np.random.randint(2, q_gamal)
+
         file.write(f'q_dh={q_dh}\n')
         file.write(f'a_dh={a_dh}\n')
         file.write(f'q_gamal={q_gamal}\n')

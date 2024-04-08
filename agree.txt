@@ -1,2 +1,4 @@
-q_dh=353
-a_dh=3
+q_dh=439
+a_dh=348
+q_gamal=359
+a_gamal=346

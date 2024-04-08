@@ -1,20 +1,34 @@
 import socket
 from helpers.tools import from_file, generate_prime
-from helpers.dh_gamal import deffie_hellman
+from helpers.dh_gamal import deffie_hellman, al_gamal
 import time
 
 # Receiver setup
 
 
-def generate_public_and_private_key():
+def DH_Keys():
     # read the q , a from agree.txt
     q, a, _, _ = from_file("agree.txt")
     # generate the private key
     x_b = generate_prime(1, q)
     # generate the public key
     y_b = deffie_hellman(q, a, x_b)
-    print(f"Private Key: {x_b} , Public Key: {y_b}")
-    return y_b
+
+    return x_b, y_b
+
+
+def AlGamal_keys():
+    # read the q , a from agree.txt
+    _, _, q, a = from_file("agree.txt")
+    # generate the private key
+    x_a = generate_prime(1, q-1)
+    # generate the public key
+    y_a = al_gamal(q, a, x_a)
+    return x_a, y_a
+
+
+def verify_signature(msg, signature, public_key):
+    pass
 
 
 def initiliaze_chat():
@@ -30,12 +44,19 @@ def initiliaze_chat():
 
     # Receive the public key from the sender
     msg = sender_socket.recv(1024).decode()
-    print("Public key from sender:", msg)
-
+    print("Public key from sender using Al Gamal:", msg)
     # Generate the public and private key
-    msg = generate_public_and_private_key()
-    sender_socket.send(str(msg).encode())
 
+    print("DH stage")
+    x_A, y_A = DH_Keys()
+    print(f"Public Key: {y_A} , Private Key: {x_A}")
+
+    print("Al Gamal stage")
+    x_A2, y_A2 = AlGamal_keys()
+    print(f"Public Key: {y_A2} , Private Key {x_A2}")
+
+    sender_socket.send(str(y_A2).encode())
+    print("Verifying the signature...")
     return sender_socket, receiver_socket
 
 
