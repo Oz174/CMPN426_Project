@@ -1,7 +1,7 @@
-from functools import cache
 from typing import List, Union, Tuple
 import numpy as np
 import base64
+import os
 
 
 def is_prime(n: int) -> bool:
@@ -16,7 +16,6 @@ def is_prime(n: int) -> bool:
         return all([n % i != 0 for i in range(2, int(n/2)+1)])
 
 
-@cache
 def generate_prime(low: int, high: int, how_many: int = 2) -> Union[int, List[int]]:
     """
     Generate a prime number between low and high
@@ -33,7 +32,7 @@ def generate_prime(low: int, high: int, how_many: int = 2) -> Union[int, List[in
             prime_num = np.random.randint(low=low, high=high)
         counter -= 1
         primes.append(prime_num)
-    return primes
+    return primes if how_many > 1 else primes[0]
 
 
 def enforce_message_encoding(message: str, n: int, encoding: str = 'utf-8') -> Union[int, List[int]]:
@@ -60,12 +59,16 @@ def enforce_message_encoding(message: str, n: int, encoding: str = 'utf-8') -> U
     return int_blocks
 
 
-def from_file(file_path: str) -> Tuple[int, int]:
+def from_file(file_path: str) -> Tuple[int]:
     """
     Read the contents of a file
     param file_path: str
     return: str
     """
+    q_dh = 0
+    a_dh = 0
+    q_gamal = 0
+    a_gamal = 0
     with open(file_path, 'r') as f:
         sender_keys = f.readlines()
     for key in sender_keys:
@@ -80,11 +83,20 @@ def from_file(file_path: str) -> Tuple[int, int]:
     return q_dh, a_dh, q_gamal, a_gamal
 
 
-def to_file(file_path: str, content: str) -> None:
+def generate_params_file(file_path: str) -> None:
     """
     Write the contents to a file
     param file_path: str
     param content: str
     """
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
     with open(file_path, 'w') as file:
-        file.write(content)
+        # radomly generate the prime numbers
+        q_dh, a_dh, q_gamal, a_gamal = generate_prime(100, 1000, 4)
+        file.write(f'q_dh={q_dh}\n')
+        file.write(f'a_dh={a_dh}\n')
+        file.write(f'q_gamal={q_gamal}\n')
+        file.write(f'a_gamal={a_gamal}\n')
+    return None
