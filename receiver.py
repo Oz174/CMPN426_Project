@@ -1,7 +1,20 @@
 import socket
+from helpers.tools import from_file, generate_prime
+from helpers.dh_gamal import deffie_hellman
 import time
 
 # Receiver setup
+
+
+def generate_public_and_private_key():
+    # read the q , a from agree.txt
+    q, a, _, _ = from_file("agree.txt")
+    # generate the private key
+    x_b = generate_prime(1, q)
+    # generate the public key
+    y_b = deffie_hellman(q, a, x_b)
+    print(f"Private Key: {x_b} , Public Key: {y_b}")
+    return y_b
 
 
 def initiliaze_chat():
@@ -14,6 +27,15 @@ def initiliaze_chat():
     # Accept connection from the sender
     sender_socket, sender_address = receiver_socket.accept()
     print("Connected to sender:", sender_address)
+
+    # Receive the public key from the sender
+    msg = sender_socket.recv(1024).decode()
+    print("Public key from sender:", msg)
+
+    # Generate the public and private key
+    msg = generate_public_and_private_key()
+    sender_socket.send(str(msg).encode())
+
     return sender_socket, receiver_socket
 
 
@@ -22,9 +44,6 @@ def handle_messages(sender_socket, receiver_socket):
     while True:
         msg = sender_socket.recv(1024).decode()
         print("Message from sender:", msg)
-        # problem = sender_socket.recv(1024).decode()
-        # if not problem:
-        #     break
 
         if not msg:
             print("Sender has left the chat , do you want to leave too? (y/n)")
@@ -34,8 +53,6 @@ def handle_messages(sender_socket, receiver_socket):
                 time.sleep(1)
                 exit()
 
-        # # Process the problem and compute the result
-        # result = str(eval(problem))
         reply = input("Type Here: ")
 
         if not reply:
