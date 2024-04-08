@@ -16,7 +16,7 @@ def is_prime(n: int) -> bool:
         return all([n % i != 0 for i in range(2, int(n/2)+1)])
 
 
-def generate_prime(low: int, high: int, how_many: int = 2) -> Union[int, List[int]]:
+def generate_prime(low: int, high: int, how_many: int = 1) -> Union[int, List[int]]:
     """
     Generate a prime number between low and high
     param low: int
