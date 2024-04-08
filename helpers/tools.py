@@ -40,7 +40,7 @@ def enforce_message_encoding(message: str, n: int, encoding: str = 'utf-8') -> U
     message_bytes = message.encode('utf-8')
     if int.from_bytes(message_bytes, 'little') > n:
         # split the message into blocks and encode each block
-        message_blocks = [message[i:i+2] for i in range(0, len(message), 2)]
+        message_blocks = [message[i:i+1] for i in range(0, len(message), 1)]
         utf_8_blocks = [block.encode('utf-8') for block in message_blocks]
         if encoding == 'base85':
             utf_8_blocks = [base64.b85encode(block) for block in utf_8_blocks]
