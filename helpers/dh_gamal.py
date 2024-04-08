@@ -26,16 +26,3 @@ def secret_key_from_dh(prime: int, public_key: int, private_key: int) -> int:
     secret_key = (public_key
                   ** private_key) % prime
     return secret_key
-
-
-def al_gamal(prime: int, generator: int, private_key: int):
-    """
-    Generate the public key for the Al-Gamal key exchange
-    param prime: int
-    param generator: int
-    param private_key: int
-    return: int
-    """
-    public_key = (generator
-                  ** private_key) % prime
-    return (prime, generator, public_key)

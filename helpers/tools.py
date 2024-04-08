@@ -1,32 +1,31 @@
 from typing import List, Union, Tuple
-import numpy as np
 import base64
 
 
-def is_prime(n: int) -> bool:
-    """
-    Check if a number is prime
-    param n: int
-    return: bool
-    """
-    if n <= 1:
-        return False
-    else:
-        return all([n % i != 0 for i in range(2, int(n/2)+1)])
+# def is_prime(n: int) -> bool:
+#     """
+#     Check if a number is prime
+#     param n: int
+#     return: bool
+#     """
+#     if n <= 1:
+#         return False
+#     else:
+#         return all([n % i != 0 for i in range(2, int(n/2)+1)])
 
 
-def generate_prime(low: int, high: int) -> Union[int, List[int]]:
-    """
-    Generate a prime number between low and high
-    param low: int
-    param high: int
-    param how_many: int
-    return: int or List[int]
-    """
-    prime_num = np.random.randint(low=low, high=high)
-    while not is_prime(prime_num):
-        prime_num = np.random.randint(low=low, high=high)
-    return prime_num
+# def generate_prime(low: int, high: int) -> Union[int, List[int]]:
+#     """
+#     Generate a prime number between low and high
+#     param low: int
+#     param high: int
+#     param how_many: int
+#     return: int or List[int]
+#     """
+#     prime_num = np.random.randint(low=low, high=high)
+#     while not is_prime(prime_num):
+#         prime_num = np.random.randint(low=low, high=high)
+#     return prime_num
 
 
 def enforce_message_encoding(message: str, n: int, encoding: str = 'utf-8') -> Union[int, List[int]]:
