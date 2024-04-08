@@ -1,7 +1,6 @@
 from typing import List, Union, Tuple
 import numpy as np
 import base64
-import os
 
 
 def is_prime(n: int) -> bool:
@@ -78,24 +77,24 @@ def from_file(file_path: str) -> Tuple[int]:
     return q_dh, a_dh, q_gamal, a_gamal
 
 
-def generate_params_file(file_path: str) -> None:
-    """
-    Write the contents to a file
-    param file_path: str
-    param content: str
-    """
-    if os.path.exists(file_path):
-        os.remove(file_path)
+# def generate_params_file(file_path: str) -> None:
+#     """
+#     Write the contents to a file
+#     param file_path: str
+#     param content: str
+#     """
+#     if os.path.exists(file_path):
+#         os.remove(file_path)
 
-    with open(file_path, 'w') as file:
-        # radomly generate the prime numbers
-        q_dh = generate_prime(100, 1000)
-        a_dh = np.random.randint(2, q_dh)
-        q_gamal = generate_prime(100, 1000)
-        a_gamal = np.random.randint(2, q_gamal)
+#     with open(file_path, 'w') as file:
+#         # radomly generate the prime numbers
+#         q_dh = generate_prime(100, 1000)
+#         a_dh = np.random.randint(2, q_dh)
+#         q_gamal = generate_prime(100, 1000)
+#         a_gamal = np.random.randint(2, q_gamal)
 
-        file.write(f'q_dh={q_dh}\n')
-        file.write(f'a_dh={a_dh}\n')
-        file.write(f'q_gamal={q_gamal}\n')
-        file.write(f'a_gamal={a_gamal}\n')
-    return None
+#         file.write(f'q_dh={q_dh}\n')
+#         file.write(f'a_dh={a_dh}\n')
+#         file.write(f'q_gamal={q_gamal}\n')
+#         file.write(f'a_gamal={a_gamal}\n')
+#     return None
