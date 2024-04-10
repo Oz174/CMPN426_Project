@@ -2,4 +2,4 @@ Hello and welcome to file11 forensic challenge. This is just filler text to make
 
 
 
-fastctf{a_bit_tricky}
+fastctf{a_bit_tricky|
