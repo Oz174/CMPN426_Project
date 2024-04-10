@@ -39,12 +39,11 @@ def initiliaze_chat():
     print("Sending the signature...")
     c1, c2 = send_signature(y_B, y_B2, a2, q2)
     sender_socket.send(str(c1).encode())
-    time.sleep(2)
+    time.sleep(1)
     sender_socket.send(str(c2).encode())
     print("Receiving Receiver signature")
     c1 = int(sender_socket.recv(1024).decode())
     c2 = int(sender_socket.recv(1024).decode())
-    print("Receiver signature received")
     print("Verifying signature...")
     if verify_signature(y_A, x_A2, q2, c1, c2):
         print("Signature verified")
