@@ -1,4 +1,4 @@
-q_dh=761
-a_dh=6
-q_gamal=19
-a_gamal=2
+q_dh=19
+a_dh=2
+q_gamal=761
+a_gamal=6

@@ -1,37 +1,24 @@
 import socket
-from helpers.tools import from_file, generate_prime
-from helpers.dh_gamal import deffie_hellman, al_gamal
+from helpers.tools import from_file
+from helpers.dh_gamal import deffie_hellman, send_signature, verify_signature
 import time
-
+import numpy as np
 # Receiver setup
 
-
-def DH_Keys():
-    # read the q , a from agree.txt
-    q, a, _, _ = from_file("agree.txt")
-    # generate the private key
-    x_b = generate_prime(1, q)
-    # generate the public key
-    y_b = deffie_hellman(q, a, x_b)
-
-    return x_b, y_b
+q, a, q2, a2 = from_file("agree.txt")
 
 
-def AlGamal_keys():
-    # read the q , a from agree.txt
-    _, _, q, a = from_file("agree.txt")
-    # generate the private key
-    x_a = generate_prime(1, q-1)
-    # generate the public key
-    y_a = al_gamal(q, a, x_a)
-    return x_a, y_a
-
-
-def verify_signature(msg, signature, public_key):
-    pass
+def generate_all_keys():
+    global q, a, q2, a2
+    x_A = np.random.randint(2, q-1)
+    x_A2 = np.random.randint(2, q2 - 1)
+    y_A = deffie_hellman(q, a, x_A)
+    y_A2 = deffie_hellman(q2, a2, x_A2)
+    return x_A, y_A, x_A2, y_A2
 
 
 def initiliaze_chat():
+    global q, a, q2, a2
     receiver_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     receiver_socket.bind(('localhost', 12345))
     receiver_socket.listen(1)
@@ -42,21 +29,35 @@ def initiliaze_chat():
     sender_socket, sender_address = receiver_socket.accept()
     print("Connected to sender:", sender_address)
 
+    time.sleep(2)
     # Receive the public key from the sender
     msg = sender_socket.recv(1024).decode()
-    print("Public key from sender using Al Gamal:", msg)
+    y_A = int(msg)
+    msg = sender_socket.recv(1024).decode()
+    y_A2 = int(msg)
     # Generate the public and private key
 
-    print("DH stage")
-    x_A, y_A = DH_Keys()
-    print(f"Public Key: {y_A} , Private Key: {x_A}")
+    x_B, y_B, x_B2, y_B2 = generate_all_keys()
 
-    print("Al Gamal stage")
-    x_A2, y_A2 = AlGamal_keys()
-    print(f"Public Key: {y_A2} , Private Key {x_A2}")
+    sender_socket.send(str(y_B).encode())
+    time.sleep(1)
+    sender_socket.send(str(y_B2).encode())
 
-    sender_socket.send(str(y_A2).encode())
-    print("Verifying the signature...")
+    print("Receiving signature from sender...")
+    c1 = int(sender_socket.recv(1024).decode())
+    c2 = int(sender_socket.recv(1024).decode())
+    print("Signature received from sender")
+    print("Verifying signature...")
+    if verify_signature(y_B, x_B2, q2, c1, c2):
+        print("Signature verified")
+    else:
+        print("Signature not verified")
+        exit()
+    print("Sending receiver signature...")
+    c1, c2 = send_signature(y_A, y_A2, a2, q2)
+    sender_socket.send(str(c1).encode())
+    time.sleep(1)
+    sender_socket.send(str(c2).encode())
     return sender_socket, receiver_socket
 
 

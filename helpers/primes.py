@@ -120,7 +120,7 @@ def findPrimitive(n):
 
 if __name__ == "__main__":
     # Driver Code
-    n = 761
+    n = 13
     print("Smallest primitive root of",
           n, "is", findPrimitive(n))
 
