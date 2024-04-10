@@ -13,6 +13,8 @@ def encode_b16(plain):
     return encoded
 
 
+# inverse the operation of encoding
+# take each two letters , find their index in binary , concat and retrieve original one
 def decode_b16(encoded):
     decoded = ""
     for j in range(0, len(encoded), 2):
@@ -52,6 +54,7 @@ with open('cipher.txt', 'r') as f:
     # print(enc)
 
 with open('flag.txt', 'w') as f:
+    # from hint , K is only one letter
     for key in string.ascii_lowercase:
         dec = ""
         f.write(f"{key} : ")
@@ -61,4 +64,5 @@ with open('flag.txt', 'w') as f:
             f.write(decode_b16(dec))
             f.write("\n")
         except UnicodeEncodeError:
+            # if an error arise , skip the letter
             f.write("\n")
