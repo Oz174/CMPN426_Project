@@ -27,7 +27,7 @@ def initiliaze_chat():
     x_A, y_A, x_A2, y_A2 = generate_all_keys()
 
     sender_socket.send(str(y_A).encode())
-    time.sleep(1)
+    time.sleep(2)
     sender_socket.send(str(y_A2).encode())
 
     # Receive the public key from the receiver
@@ -39,7 +39,7 @@ def initiliaze_chat():
     print("Sending the signature...")
     c1, c2 = send_signature(y_B, y_B2, a2, q2)
     sender_socket.send(str(c1).encode())
-    time.sleep(1)
+    time.sleep(2)
     sender_socket.send(str(c2).encode())
     print("Receiving Receiver signature")
     c1 = int(sender_socket.recv(1024).decode())
