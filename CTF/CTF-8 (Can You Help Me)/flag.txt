@@ -1,0 +1,6 @@
+key = RUSSIAN
+alphabet = polybiusacdefghikmnqrtvwxz
+method = Nhilist cipher
+
+
+flag = thankyouforsavingmetheflagismoscow
