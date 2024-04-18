@@ -34,7 +34,9 @@ def find_flag(file):
            'U': 'M', 'D': 'D', 'Z': 'Z', 'J': 'X', 'F': 'Q', 'H': 'H'}
     for char in encrypted:
         # if the car is a space or newline character, add it to the flag
-        if char == ' ' or char == '\n':
+        if char in [' ', '\n', ',', '.', "'", '"', '!', '?', ':', ';', '-']:
+            flag += char
+        elif char.isdigit():
             flag += char
         else:
             # shift this character by 3
@@ -52,5 +54,5 @@ def write_flag_to_file(file, flag):
 
 
 if __name__ == '__main__':
-    flag = find_flag('encrypted_text.txt')
-    write_flag_to_file('sub', flag)
+    flag = find_flag('Substitution.txt')
+    write_flag_to_file('sub_ctflearn', flag)
