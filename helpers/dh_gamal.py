@@ -29,7 +29,7 @@ def generate_aes_key(prime: int, public_key: int, private_key: int) -> int:
     # the secret key is the public key raised to the power of the private key modulo the prime number
     secret_key = (public_key
                   ** private_key) % prime
-    return hashlib.sha256(str(secret_key).encode()).hexdigest().encode()
+    return hashlib.sha256(str(secret_key).encode())
 
 
 def gcd(num1, num2):
@@ -70,7 +70,7 @@ def send_signature_sha1(public_dh, private_gamal, generator, prime):
     return public_dh, r, s
 
 
-def verify_signature_sha1(public_dh, public_gamal, private_dh, generator, prime, r, s):
+def verify_signature_sha1(public_dh, public_gamal, generator, prime, r, s):
     assert 0 < r < prime, "r not in permissible range"
     assert 0 < s < prime - 1, "s not in permissble range"
     # to verify then

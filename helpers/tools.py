@@ -1,3 +1,5 @@
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
 from typing import Tuple
 
 
@@ -23,3 +25,17 @@ def from_file(file_path: str) -> Tuple[int]:
         elif 'a_gamal' in key:
             a_gamal = int(key.split('=')[-1])
     return q_dh, a_dh, q_gamal, a_gamal
+
+
+def encryptString(plaintext, key):
+    cipher = AES.new(key, AES.MODE_ECB)
+
+    ciphertext = cipher.encrypt(pad(plaintext, 16))
+    print(ciphertext.hex())
+    return ciphertext
+
+
+def decryptString(ciphertext, key):
+    cipher = AES.new(key, AES.MODE_ECB)
+    plaintext = unpad(cipher.decrypt(ciphertext), 16)
+    return plaintext

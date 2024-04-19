@@ -1,11 +1,10 @@
 import socket
 import sys
-import time
 import numpy as np
 
 from helpers.dh_gamal import (dh_gamal, send_signature_sha1,
                               verify_signature_sha1, generate_aes_key)
-from helpers.tools import from_file
+from helpers.tools import from_file, encryptString, decryptString
 
 # q : deffie hellman prime number
 # a : deffie hellman generator
@@ -15,8 +14,8 @@ q, a, q2, a2 = from_file("agree.txt")
 
 
 def generate_all_keys():
-    # set the seed to 0
-    np.random.seed(0)
+    # set the seed
+    np.random.seed(42)
     global q, a, q2, a2
     x_A = np.random.randint(2, q-1)
     x_A2 = np.random.randint(2, q2 - 1)
@@ -38,48 +37,48 @@ def initiliaze_chat():
 
     print(f"Sending the Algamal key {y_A2} to Receiver...")
     sender_socket.send(str(y_A2).encode())
-    time.sleep(5)
 
     # Receive the Algamal key from the receiver
     msg = sender_socket.recv(1024).decode()
     y_B2 = int(msg)
     print(f"Received the Algamal key  {y_B2} from Receiver...")
-    time.sleep(5)
 
     sig = send_signature_sha1(y_A, x_A2, a2, q2)
     print(f"Sending the signature : {sig}")
     sender_socket.send(str(sig).encode())
-    time.sleep(5)
 
     print("Receiving Receiver signature")
     rec_sig = eval(sender_socket.recv(1024).decode())
-    time.sleep(5)
 
     print(f"Verifying signature...{rec_sig}")
 
     if verify_signature_sha1(
-            rec_sig[0], y_B2, x_A2, a2, q2, rec_sig[1], rec_sig[2]):
+            rec_sig[0], y_B2, a2, q2, rec_sig[1], rec_sig[2]):
         print("Signature verified")
         key = generate_aes_key(q2, rec_sig[0], x_A)
-        print(f"Shared key: {key}")
+        print(f"Shared key: {key.hexdigest().encode()}")
     else:
         print("Signature not verified, Terminating ...")
         exit()
-    return sender_socket
+    return sender_socket, key.digest()
 
 
 # Send addition/subtraction problems to the receiver
-def handle_messages(sender_socket):
+def handle_messages(sender_socket, key):
     while True:
         msg = input("Type Here: ")
 
         if not msg:
+            # tell the receiver that sender has left the chat
+            msg = "exit"
+        sender_socket.send(encryptString(msg.encode(), key))
+
+        if msg == "exit":
             break
-        sender_socket.send(msg.encode())
 
         # Receive the result from the receiver
         # result = sender_socket.recv(1024).decode()
-        reply = sender_socket.recv(1024).decode()
+        reply = decryptString(sender_socket.recv(1024), key).decode()
         print("Receiver Sent :", reply)
 
     # Close the sender socket
@@ -87,5 +86,5 @@ def handle_messages(sender_socket):
 
 
 if __name__ == "__main__":
-    sender_socket = initiliaze_chat()
-    handle_messages(sender_socket)
+    sender_socket, key = initiliaze_chat()
+    handle_messages(sender_socket, key)
