@@ -46,6 +46,8 @@ def generate_random_k(prime):
 
 
 def extended_euclidean(a, b):
+    # a is k
+    # b is prime
     if a == 0:
         return b, 0, 1
     else:
