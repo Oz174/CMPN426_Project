@@ -40,7 +40,7 @@
 
 ## CTF - 7
 
-    1. Up till now , Using file analysis we notice there's an audio file embedded
+    1. Using steghide with password HIDING , a text file appeared (Steghide is a windows or linux package)
 
 ## CTF - 8
 
