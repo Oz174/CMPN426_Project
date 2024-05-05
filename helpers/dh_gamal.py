@@ -79,9 +79,9 @@ def verify_signature_sha1(public_dh, public_gamal, generator, prime, r, s):
     # g**m = (public_dh**r * r**s) mod prime
     m = hashlib.sha1(str(public_dh).encode()).hexdigest()
     m = int(m[-1:], 16)
-    left = pow(generator, m, prime)
+    left = pow(generator, m, prime)  # m
     # print(f"left : {left}")
-    right = (pow(public_gamal, r) * pow(r, s)) % prime
+    right = (pow(public_gamal, r) * pow(r, s)) % prime  # m'
     # print(f"right = {right}")
     # print(f"m: {m}, r: {r}, s: {s} ")
     return True if left == right else False

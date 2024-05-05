@@ -18,7 +18,7 @@ q, a, q2, a2 = from_file("agree.txt")
 
 def generate_all_keys():
     # set the seed
-    np.random.seed(42)
+    np.random.seed(20)
     global q, a, q2, a2
     x_B = np.random.randint(2, q-1)
     x_B2 = np.random.randint(2, q2 - 1)
@@ -44,9 +44,9 @@ def initiliaze_chat():
 
     msg = sender_socket.recv(1024).decode()
     y_A2 = int(msg)
-    print(f"Received the Algamal key {y_A2} from Receiver...")
+    print(f"Received the Algamal key {y_A2} from Sender...")
 
-    print(f"Sending the Algamal key {y_B2} to Receiver...")
+    print(f"Sending the Algamal key {y_B2} to Sender...")
     sender_socket.send(str(y_B2).encode())
 
     sender_sig = eval(sender_socket.recv(1024).decode())

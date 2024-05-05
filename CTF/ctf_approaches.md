@@ -8,10 +8,10 @@
 
 ## CTF - 2 (Packet Analysis)
 
-    1. Opened the .pcapng file in Wireshark App for packet analysis
+    1. Opened the .pcapng file in Wireshark App for packet analysis (winget install wireshark)
     2. Filtered all the data coming from http protocols 
-    3. Filtered the text/plaintext files till found something looked like flag structure but encrypted
-    4. Used Online ROT-14 deciphering to get the flag as shown
+    3. Filtered the text/html or text/plain files till found something looked like flag structure but encrypted
+    4. Used Online ROT-13 deciphering to get the flag as shown
 
 ## CTF - 3
 
