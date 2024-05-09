@@ -1,5 +1,10 @@
 import numpy as np
 import hashlib
+from typing import TypeVar, Tuple
+
+
+prime = TypeVar('prime', int)
+k = TypeVar('k', int)
 
 
 def dh_gamal(prime: int, generator: int, private_key: int) -> int:
@@ -32,23 +37,18 @@ def generate_aes_key(prime: int, public_key: int, private_key: int) -> int:
     return hashlib.sha256(str(secret_key).encode())
 
 
-def gcd(num1, num2):
-    assert num1 > num2, "First Number should be greater"
+def gcd(num1: int, num2: int) -> int:
+    """
+    Calculate the greatest common divisor of two numbers
+    param num1: int
+    param num2: int
+    return: int
+    """
     _, r = divmod(num1, num2)
     return num2 if r == 0 else gcd(num2, r)
 
 
-def generate_random_k(prime):
-    # k belongs to {2,...,prime-2} wikipedia algamal signature
-    k = np.random.randint(2, prime-1)
-    while gcd(prime-1, k) != 1:
-        k = np.random.randint(2, prime-1)
-    return k
-
-
-def extended_euclidean(a, b):
-    # a is k
-    # b is prime
+def extended_euclidean(a: k, b: prime) -> Tuple[int]:
     if a == 0:
         return b, 0, 1
     else:
@@ -56,7 +56,16 @@ def extended_euclidean(a, b):
         return g, y - (b // a) * x, x
 
 
-def send_signature_sha1(public_dh, private_gamal, generator, prime):
+def generate_random_k(p: prime) -> int:
+    # k belongs to {2,...,p-2} wikipedia algamal signature
+    k = np.random.randint(2, p-1)
+    while gcd(p-1, k) != 1:
+        k = np.random.randint(2, p-1)
+    return k
+
+
+def send_signature_sha1(public_dh: int, private_gamal: int, generator: int, prime: int) -> Tuple[int, int, int]:
+
     m = hashlib.sha1(str(public_dh).encode()).hexdigest()
     # take last 8 bits
     m = int(m[-1:], 16)
@@ -77,14 +86,15 @@ def send_signature_sha1(public_dh, private_gamal, generator, prime):
     return public_dh, r, s
 
 
-def verify_signature_sha1(public_dh, public_gamal, generator, prime, r, s):
+def verify_signature_sha1(public_dh: int, public_gamal: int, generator: int, prime: int, r: int, s: int) -> bool:
+    # r , s are S1 and S2 in wikipedia algamal signature
     try:
         assert 0 < r < prime, "r not in permissible range"
         assert 0 < s < prime - 1, "s not in permissble range"
     except AssertionError:
         return False
     # to verify then
-    # g**m = (public_dh**r * r**s) mod prime
+    # g**m = (public_dh**r * r**s) mod prime (i.e : m = m')
     m = hashlib.sha1(str(public_dh).encode()).hexdigest()
     m = int(m[-1:], 16)
     left = pow(generator, m, prime)  # m
