@@ -1,4 +1,16 @@
-# How to Run ?
+# CMPN426 - Project
+
+## Team Members
+
+1. Ahmed Tarek Abdellatif 1190157
+
+2. Kareem Yasser Ali Ragab 1190175
+
+3. Nada Hesham Anwer Hussien 1190185
+
+4. Mahmoud Khaled Mahmoud 1190141
+
+## How to Run ?
 
 - Open the first terminal and run the receiever script first
 
