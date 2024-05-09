@@ -39,12 +39,12 @@ b16 = encode_b16(flag)
 print(b16)
 enc = ""
 for i, c in enumerate(b16):
-    enc += caesar_shift(c, key[i % len(key)])
+    enc += caesar_shift(c, key)
 print(enc)
 
 dec = ""
 for i, c in enumerate(enc):
-    dec += caesar_deshift(c, key[i % len(key)])
+    dec += caesar_deshift(c, key)
 print(dec)
 print(decode_b16(dec))
 
