@@ -3,8 +3,8 @@ import hashlib
 from typing import TypeVar, Tuple
 
 
-prime = TypeVar('prime', int)
-k = TypeVar('k', int)
+prime = TypeVar('prime', bound=int)
+k = TypeVar('k', bound=int)
 
 
 def dh_gamal(prime: int, generator: int, private_key: int) -> int:
