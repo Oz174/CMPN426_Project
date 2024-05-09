@@ -27,15 +27,28 @@ def from_file(file_path: str) -> Tuple[int]:
     return q_dh, a_dh, q_gamal, a_gamal
 
 
-def encryptString(plaintext, key):
+def encryptString(plaintext: str, key: bytes) -> bytes:
+    """
+    Encrypt a string using AES
+    param plaintext: str
+    param key: bytes
+    return: bytes
+    """
     cipher = AES.new(key, AES.MODE_ECB)
-
+    # pad used to ensure that the plaintext is a multiple of 16 bytes
+    # 16 bytes is the block size of AES
     ciphertext = cipher.encrypt(pad(plaintext, 16))
     print(ciphertext.hex())
     return ciphertext
 
 
-def decryptString(ciphertext, key):
+def decryptString(ciphertext: str, key: bytes) -> str:
+    """
+    Decrypt a string using AES
+    param ciphertext: str
+    param key: bytes
+    return: str
+    """
     cipher = AES.new(key, AES.MODE_ECB)
     plaintext = unpad(cipher.decrypt(ciphertext), 16)
     return plaintext
