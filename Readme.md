@@ -17,7 +17,7 @@ python sender.py
 ## How does it work ?
 
 1. Each of Alice (sender) and Bob (receiver) starts by calculating there DH and Algamal Pairs of Keys
-2. They exchange Algamal public keys
+2. They exchange Algamal public keys (each one's has its own seed for generating the keys to ensure randomness and also a consistent key)
 3. They verify the signature with each one's DH public key as a Message M hashed by SHA1
 4. If the signature is not verified , the chat is terminated
 5. Otherwise, they generate a unified key using SHA256 for AES.mode_ECB

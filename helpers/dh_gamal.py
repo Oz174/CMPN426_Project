@@ -60,7 +60,10 @@ def send_signature_sha1(public_dh, private_gamal, generator, prime):
     m = hashlib.sha1(str(public_dh).encode()).hexdigest()
     # take last 8 bits
     m = int(m[-1:], 16)
-    assert 0 < m < prime, "m doesn't satisfy the condition 0 < m < prime"
+    try:
+        assert 0 < m < prime, "m doesn't satisfy the condition 0 < m < prime"
+    except AssertionError:
+        return None
     # generate random K
 
     # in the unlikely event of s = 0 , you will have to regenerate the k (wikipedia algamal signature)
@@ -75,8 +78,11 @@ def send_signature_sha1(public_dh, private_gamal, generator, prime):
 
 
 def verify_signature_sha1(public_dh, public_gamal, generator, prime, r, s):
-    assert 0 < r < prime, "r not in permissible range"
-    assert 0 < s < prime - 1, "s not in permissble range"
+    try:
+        assert 0 < r < prime, "r not in permissible range"
+        assert 0 < s < prime - 1, "s not in permissble range"
+    except AssertionError:
+        return False
     # to verify then
     # g**m = (public_dh**r * r**s) mod prime
     m = hashlib.sha1(str(public_dh).encode()).hexdigest()
