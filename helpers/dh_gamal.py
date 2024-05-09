@@ -39,9 +39,10 @@ def gcd(num1, num2):
 
 
 def generate_random_k(prime):
-    k = np.random.randint(2, prime-2)
+    # k belongs to {2,...,prime-2} wikipedia algamal signature
+    k = np.random.randint(2, prime-1)
     while gcd(prime-1, k) != 1:
-        k = np.random.randint(2, prime-2)
+        k = np.random.randint(2, prime-1)
     return k
 
 
@@ -62,7 +63,8 @@ def send_signature_sha1(public_dh, private_gamal, generator, prime):
     assert 0 < m < prime, "m doesn't satisfy the condition 0 < m < prime"
     # generate random K
 
-    r, s = 0, 0  # in the unlikely event of s = 0 , you will have to regenerate the k
+    # in the unlikely event of s = 0 , you will have to regenerate the k (wikipedia algamal signature)
+    r, s = 0, 0
     while s == 0:
         k = generate_random_k(prime)
         r = pow(generator, k, prime)
