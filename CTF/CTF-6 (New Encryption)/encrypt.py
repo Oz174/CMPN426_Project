@@ -35,18 +35,18 @@ def caesar_deshift(c, k):
 flag = "secretkey"
 # hint: key is a single letter
 key = "j"
-# b16 = encode_b16(flag)
-# print(b16)
-# enc = ""
-# for i, c in enumerate(b16):
-#     enc += caesar_shift(c, key[i % len(key)])
-# print(enc)
+b16 = encode_b16(flag)
+print(b16)
+enc = ""
+for i, c in enumerate(b16):
+    enc += caesar_shift(c, key[i % len(key)])
+print(enc)
 
-# dec = ""
-# for i, c in enumerate(enc):
-#     dec += caesar_deshift(c, key[i % len(key)])
-# print(dec)
-# print(decode_b16(dec))
+dec = ""
+for i, c in enumerate(enc):
+    dec += caesar_deshift(c, key[i % len(key)])
+print(dec)
+print(decode_b16(dec))
 
 # 3ayzeen nwsl ll b16 mn el enc
 with open('cipher.txt', 'r') as f:
