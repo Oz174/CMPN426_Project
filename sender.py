@@ -1,7 +1,7 @@
 import socket
 import sys
 import numpy as np
-
+import time
 from helpers.dh_gamal import (dh_gamal, send_signature_sha1,
                               verify_signature_sha1, generate_aes_key)
 from helpers.tools import from_file, encryptString, decryptString
@@ -37,7 +37,7 @@ def initiliaze_chat():
 
     print(f"Sending the Algamal key {y_A2} to Receiver...")
     sender_socket.send(str(y_A2).encode())
-
+    time.sleep(5)
     # Receive the Algamal key from the receiver
     msg = sender_socket.recv(1024).decode()
     y_B2 = int(msg)
@@ -46,6 +46,7 @@ def initiliaze_chat():
     sig = send_signature_sha1(y_A, x_A2, a2, q2)
     print(f"Sending the signature : {sig}")
     sender_socket.send(str(sig).encode())
+    time.sleep(5)
 
     print("Receiving Receiver signature")
     rec_sig = eval(sender_socket.recv(1024).decode())
