@@ -2,8 +2,8 @@
 
 ## CTF - 1 (Cryptanalysis)
 
-    1. Letters statistics 
-    2. bigrams and trigrams statistics (tracing words like the , of , so)
+    1. Observed Letters statistics 
+    2. bigrams and trigrams statistics (tracing the occurence of words like : the , of , so)
     3. The rest of letters came by trials and errors by looking to deciphered text at each iteration
 
 ## CTF - 2 (Packet Analysis)
