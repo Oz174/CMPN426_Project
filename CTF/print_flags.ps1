@@ -1,0 +1,1 @@
+Get-ChildItem -Path . -Filter "flag.txt" -Recurse | ForEach-Object { Get-Content $_.FullName; echo "" }
