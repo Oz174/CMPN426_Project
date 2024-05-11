@@ -25,7 +25,6 @@ def find_flag(file):
     """
     with open(file, 'r') as f:
         encrypted = f.read()
-    # dict of keys for caesar cipher with key = 3
     flag = ''
     key = {'I': 'E', 'K': 'T', 'P': 'O', 'E': 'A', 'V': 'S',
            'X': 'U', 'Y': 'W', 'M': 'N', 'O': 'D', 'B': 'R',
@@ -39,7 +38,6 @@ def find_flag(file):
         elif char.isdigit():
             flag += char
         else:
-            # shift this character by 3
             flag += key[char]
     return flag
 
